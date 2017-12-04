@@ -1,0 +1,8 @@
+{
+  "name": "jupiter",
+  "app_id": "cb463781",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
