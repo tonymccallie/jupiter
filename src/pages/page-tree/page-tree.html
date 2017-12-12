@@ -1,15 +1,50 @@
-<ion-header no-border>
-	<ion-navbar color="dark">
-		<ion-title center>PageTree</ion-title>
+<ion-header>
+	<ion-navbar>
 		<button ion-button icon-only menuToggle>
-			<ion-icon name="menu"></ion-icon>
+			<ion-icon name="ios-menu-outline"></ion-icon>
 		</button>
+		<ion-title>
+			<ion-icon name="ios-paper-outline"></ion-icon> Pages</ion-title>
 	</ion-navbar>
 </ion-header>
 <ion-content padding>
-	<tree-view [pages]='pagetree'></tree-view>
-	<button ion-button (click)="refresh()"><ion-icon name="refresh"></ion-icon>Refresh</button><button ion-button (click)="clear()"><ion-icon name="cancel"></ion-icon>Clear</button>
-	<ion-list *ngIf="clipboard">
-		<ion-item>{{ clipboard.title }}</ion-item>
-	</ion-list>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-12 col-md-3 push-md-9>
+				<ion-row *ngIf="!clipboard && !pageAdd && !pageSort">
+					<ion-col col-4 col-md-12>
+						<button ion-button block outline=true icon-left (click)="sort()">
+							<ion-icon name="ios-remove-circle-outline"></ion-icon>Sort Pages</button>
+					</ion-col>
+					<ion-col col-4 col-md-12>
+						<button ion-button block outline=true icon-left (click)="add()">
+							<ion-icon name="ios-add-circle-outline"></ion-icon>Add Page</button>
+					</ion-col>
+					<ion-col col-4 col-md-12>
+						<button ion-button block outline=true icon-left (click)="refresh()">
+							<ion-icon name="ios-checkmark-circle-outline"></ion-icon>Refresh</button>
+					</ion-col>
+				</ion-row>
+				<ion-row *ngIf="clipboard || pageAdd || pageSort">
+					<ion-col col-12>
+						<button ion-button block outline=true icon-left (click)="clear()">
+							<ion-icon name="ios-close-circle-outline"></ion-icon>Clear</button>
+					</ion-col>
+				</ion-row>
+				<ion-row>
+					<ion-col col-12>
+						<ion-list *ngIf="clipboard">
+							<ion-item>{{ clipboard.title }}</ion-item>
+						</ion-list>
+					</ion-col>
+				</ion-row>
+			</ion-col>
+			<ion-col col-12 col-md-9 pull-md-3>
+				<ion-card>
+					<tree-view [pages]='pagetree'></tree-view>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+
 </ion-content>

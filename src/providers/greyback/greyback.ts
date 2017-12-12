@@ -18,6 +18,12 @@ export class GreybackProvider {
 	private pageTreeStorage = new BehaviorSubject<any[]>([]);
 	pageTreeObs = this.pageTreeStorage.asObservable();
 
+	private pageAddStorage = new BehaviorSubject<boolean>(false);
+	pageAddObs = this.pageAddStorage.asObservable();
+
+	private pageSortStorage = new BehaviorSubject<boolean>(false);
+	pageSortObs = this.pageSortStorage.asObservable();
+
 	constructor(public http: Http) {
 		console.log('Hello GreybackProvider Provider');
 		// this.headers.append('Accept', 'application/json');
@@ -40,6 +46,16 @@ export class GreybackProvider {
 
 	clear() {
 		this.clipboardStorage.next('');
+		this.pageAddStorage.next(false);
+		this.pageSortStorage.next(false);
+	}
+
+	add() {
+		this.pageAddStorage.next(true);
+	}
+
+	sort() {
+		this.pageSortStorage.next(true);
 	}
 
 	after(parentPage) {
@@ -64,6 +80,10 @@ export class GreybackProvider {
 
 	getPageTree() {
 		return this.http.get(this.rootUrl + 'pagetree').map(result => result.json());
+	}
+
+	getTemplates() {
+		return this.http.get(this.rootUrl + 'templates').map(result => result.json());
 	}
 
 	// secured call

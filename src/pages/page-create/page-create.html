@@ -1,5 +1,5 @@
 <ion-header no-border>
-	<ion-navbar color="dark">
+	<ion-navbar>
 		<ion-title center>Create Page</ion-title>
 		<button ion-button icon-only menuToggle>
 			<ion-icon name="menu"></ion-icon>
@@ -8,5 +8,36 @@
 </ion-header>
 
 <ion-content padding>
-	<textarea id="editor" name="editor"></textarea>
+	<ion-card>
+		<p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
+		<form [formGroup]="formPageCreate">
+			<ion-list>
+				<ion-item>
+					<ion-label fixed>Title</ion-label>
+					<ion-input type="text" formControlName="title" placeholder="Title" [class.invalid]="!formPageCreate.controls.title.valid && (formPageCreate.controls.title.dirty || submitAttempt)"></ion-input>
+					<ion-input type="text" formControlName="parent_id" value="{{ !!parent ? parent.id : null }}"></ion-input>
+				</ion-item>
+				<ion-item *ngIf="!formPageCreate.controls.title.valid  && (formPageCreate.controls.title.dirty || submitAttempt)">
+					<p>Please enter a valid title.</p>
+				</ion-item>
+				<ion-item>
+					<ion-label fixed>Parent Page</ion-label>
+					<ion-input type="text" value="{{ !!parent ? parent.title : 'Top Level' }}" readonly></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-label>Template</ion-label>
+					<ion-select formControlName="template_id">
+						<ion-option *ngFor="let template of templates" [value]="template.id" [attr.selected]="template.title == 'Default'? true : null">{{ template.title }}</ion-option>
+					</ion-select>
+				</ion-item>
+				<ion-item>
+					<ion-label>Hidden</ion-label>
+					<ion-checkbox formControlName="hidden"></ion-checkbox>
+				</ion-item>
+				<ion-item>
+					<button ion-button color="primary" (click)="save()">Create Page</button>
+				</ion-item>
+			</ion-list>
+		</form>
+	</ion-card>
 </ion-content>

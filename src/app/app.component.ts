@@ -9,7 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 export class MyApp {
 	@ViewChild(Nav) nav: Nav;
 
-	rootPage: any = 'PageTreePage';
+	rootPage: any = 'DashboardPage';
 
 	pages: any[];
 
@@ -19,23 +19,37 @@ export class MyApp {
 		// used for an example of ngFor and navigation
 		this.pages = [
 			{
-				title: 'Pages', icon: 'home', children: [
-					{ title: 'manage', component: 'PageTreePage', icon: 'home' },
-					{ title: 'create', component: 'PageCreatePage', icon: 'home' }
+				title: 'Dashboard', children: [
+					{ title: 'Dashboard', component: 'DashboardPage', icon: 'ios-speedometer-outline' }
 				]
 			},
 			{
-				title: 'Media', icon: 'image', children: [
-					{ title: 'Images', component: 'ImagePage', icon: 'image' },
-					{ title: 'Documents', component: 'DocPage', icon: 'briefcase' },
-					{ title: 'Video', component: 'VideoPage', icon: 'videocam' },
+				title: 'Pages', children: [
+					{ title: 'Pages', component: 'PagesPage', icon: 'ios-paper-outline' },
+					{ title: 'Templates', component: 'TemplatesPage', icon: 'ios-options-outline' }
 				]
 			},
 			{
-				title: 'Feed', icon: 'chatboxes', children: [
-					{ title: 'Feed', component: 'FeedPage', icon: 'chatboxes' }
+				title: 'Media', children: [
+					{ title: 'Pictures', component: 'ImagesPage', icon: 'ios-camera-outline' },
+					{ title: 'Video', component: 'VideosPage', icon: 'ios-film-outline' },
+					{ title: 'Audio', component: 'AudioPage', icon: 'ios-volume-up-outline' },
+					{ title: 'Documents', component: 'DocsPage', icon: 'ios-filing-outline' },
 				]
 			},
+			{
+				title: 'Plugins', children: [
+					{ title: 'Posts', component: 'PostsPage', icon: 'ios-create-outline' },
+					{ title: 'Forms', component: 'FormsPage', icon: 'ios-list-box-outline' },
+					{ title: 'Podcast', component: 'PodcastsPage', icon: 'ios-mic-outline' },
+					{ title: 'Organization', component: 'OrganizationPage', icon: 'ios-people-outline' }
+				]
+			},
+			{
+				title: 'Development', children: [
+					{ title: 'Test', component: 'TestPage', icon: 'ios-create-outline' }
+				]
+			}
 		];
 
 	}

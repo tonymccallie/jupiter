@@ -1,10 +1,19 @@
 ion-menu {
 	ion-content {
-		background-color: #ccc !important;
+		background-color: #2D4364 !important;
+		color: #ffffff;
 	}
 
 	.item-ios {
 		background-color: transparent !important;
+	}
+
+	button.item-ios {
+		color: #ffffff;
+	}
+
+	ion-list-header {
+		color: color($colors,'primary') !important;
 	}
 }
 

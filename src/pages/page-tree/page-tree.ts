@@ -12,6 +12,8 @@ export class PageTreePage {
 	rootUrl: string;
 	pagetree: any[];
 	clipboard: any;
+	pageAdd: boolean;
+	pageSort: boolean;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, public greybackProvider: GreybackProvider) {
 		console.log('constructor PageTreePage');
@@ -31,8 +33,16 @@ export class PageTreePage {
 		});
 	}
 
+	sort() {
+		this.greybackProvider.sort();
+	}
+
 	clear() {
 		this.greybackProvider.clear();
+	}
+
+	add() {
+		this.greybackProvider.add();
 	}
 
 	clip() {
@@ -46,7 +56,13 @@ export class PageTreePage {
 		});
 		this.greybackProvider.pageTreeObs.subscribe(tree => {
 			this.pagetree = tree;
-		})
+		});
+		this.greybackProvider.pageAddObs.subscribe(data => {
+			this.pageAdd = data;
+		});
+		this.greybackProvider.pageSortObs.subscribe(data => {
+			this.pageSort = data;
+		});
 	}
 
 	ionViewDidLoad() {

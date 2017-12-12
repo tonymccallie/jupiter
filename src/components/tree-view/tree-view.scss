@@ -1,3 +1,16 @@
-tree-view {
+tree-view, .tree-view {
+	ul, li {
+		list-style: none;
+	}
 
+	ul {
+		padding-left: 20px;
+	}
+
+	div {
+		border: solid 1px $steeple-grey;
+		padding: 10px;
+		margin: 1px 20px 1px 0;
+		color: $steeple-grey;
+	}
 }

@@ -1,17 +1,17 @@
 <ion-split-pane>
-	<ion-menu [content]="content">
+	<ion-menu [content]="content" persistent=true>
 		<ion-header>
-			<ion-toolbar color="dark">
-				<ion-title>Menu</ion-title>
+			<ion-toolbar color="grey" text-center>
+				<img src="assets/imgs/logo.svg" height="22px">
 			</ion-toolbar>
 		</ion-header>
 
 		<ion-content>
-			<ion-list>
+			<ion-list no-lines>
 				<ng-container *ngFor="let group of pages">
-					<ion-list-header><ion-icon name="{{ group.icon }}" item-start></ion-icon>{{ group.title }}</ion-list-header>
-					<button ion-item *ngFor="let page of group.children" (click)="openPage(page)">
-						{{ page.title }}
+					<ion-list-header text-center color="grey">{{ group.title }}</ion-list-header>
+					<button no-lines ion-item *ngFor="let page of group.children" (click)="openPage(page)" detail-none>
+						<ion-icon name="{{ page.icon }}" item-start></ion-icon> {{ page.title }}
 					</button>
 				</ng-container>
 			</ion-list>

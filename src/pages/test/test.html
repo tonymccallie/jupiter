@@ -1,0 +1,11 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Test</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-card>
+		<jodit [elementId]="'my-editor-id'" (onEditorKeyup)="keyupHandlerFunction($event)"></jodit>
+	</ion-card>		
+</ion-content>

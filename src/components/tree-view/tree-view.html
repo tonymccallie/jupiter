@@ -1,10 +1,14 @@
-<ion-list inset>
-	<ion-item *ngFor="let page of pages" color="{{ page.clipped }}">
-		<ion-icon name="ios-remove-circle-outline" xitem-end (click)="clip(page)"></ion-icon>
-		
-		{{page.title}}
-		<ion-icon name="ios-arrow-dropdown-outline" *ngIf="clipboard && ((page._lft < clipboard._lft)||(page._rgt > clipboard._rgt))" (click)="after(page)"></ion-icon>
-		<ion-icon name="ios-arrow-dropright-outline" *ngIf="clipboard && ((page._lft < clipboard._lft)||(page._rgt > clipboard._rgt))" (click)="under(page)"></ion-icon>
+<ul>
+	<li *ngFor="let page of pages">
+		<div>
+			<ion-icon *ngIf="pageSort" name="ios-remove-circle-outline" (click)="clip(page)"></ion-icon>
+			<ion-icon *ngIf="pageAdd" name="ios-add-circle-outline" (click)="add(page)"></ion-icon>
+			{{page.title}}
+			<ion-icon name="ios-arrow-dropdown-outline" *ngIf="clipboard && ((page._lft < clipboard._lft)||(page._rgt > clipboard._rgt))"
+			 (click)="after(page)"></ion-icon>
+			<ion-icon name="ios-arrow-dropright-outline" *ngIf="clipboard && ((page._lft < clipboard._lft)||(page._rgt > clipboard._rgt))"
+			 (click)="under(page)"></ion-icon>
+		</div>
 		<tree-view *ngIf="page.children.length" [pages]='page.children'></tree-view>
-	</ion-item>
-</ion-list>
+	</li>
+</ul>

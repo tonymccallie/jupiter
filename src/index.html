@@ -18,16 +18,16 @@
   <!-- cordova.js required for cordova apps (remove if not needed) -->
   <script src="cordova.js"></script>
 
-  <!-- un-comment this code to enable service worker
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('service worker installed'))
         .catch(err => console.error('Error', err));
     }
-  </script>-->
+  </script>
 
   <link href="build/main.css" rel="stylesheet">
+  <link href="build/jodit.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -41,10 +41,12 @@
   <!-- The vendor js is generated during the build process
        It contains all of the dependencies in node_modules -->
   <script src="build/vendor.js"></script>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jodit/3.0.37/jodit.min.css">
+
+  <script src="build/jodit.min.js"></script>
 
   <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
+
 
 
 </body>
