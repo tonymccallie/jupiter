@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { GreybackProvider } from '../../providers/greyback/greyback';
+import { PageProvider } from './../../providers/page/page';
 
 @IonicPage()
 @Component({
@@ -10,39 +10,43 @@ import { GreybackProvider } from '../../providers/greyback/greyback';
 export class PagesPage {
 
 	rootUrl: string;
-	pagetree: any[];
+	pagetree: any;
 	clipboard: any;
 	pageAdd: boolean;
 	pageSort: boolean;
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, public greybackProvider: GreybackProvider) {
+	constructor(public navCtrl: NavController, public navParams: NavParams, public pageProvider: PageProvider) {
 		console.log('constructor PageTreePage');
-		this.rootUrl = greybackProvider.rootUrl;
-		this.greybackProvider.getPageTree().subscribe(pagetree => {
-			//this.pagetree = pagetree;
-			this.greybackProvider.pagetree(pagetree);
-		});
+		this.rootUrl = pageProvider.rootUrl;
+		// this.pageProvider.getPageTree().then(pagetree => {
+		// 	//this.pagetree = pagetree;
+		// 	this.pageProvider.pagetree(pagetree);
+		// });
 
-		this.clipboard = this.greybackProvider.clipboard;
+		this.clipboard = this.pageProvider.clipboard;
 	}
 
 	refresh() {
 		this.pagetree = [];
-		this.greybackProvider.getPageTree().subscribe(pagetree => {
+		this.pageProvider.getPageTree().then(pagetree => {
 			this.pagetree = pagetree;
 		});
 	}
 
 	sort() {
-		this.greybackProvider.sort();
+		this.pageProvider.sort();
 	}
 
 	clear() {
-		this.greybackProvider.clear();
+		this.pageProvider.clear();
 	}
 
 	add() {
-		this.greybackProvider.add();
+		this.pageProvider.add();
+	}
+
+	multiple() {
+		this.pageProvider.multiple();
 	}
 
 	addRoot() {
@@ -55,22 +59,23 @@ export class PagesPage {
 
 	ngOnInit() {
 		console.log('ngOnInit PageTreePage');
-		this.greybackProvider.clipboardObs.subscribe(data => {
+		this.pageProvider.clipboardObs.subscribe(data => {
 			this.clipboard = data;
 		});
-		this.greybackProvider.pageTreeObs.subscribe(tree => {
+		this.pageProvider.pageTreeObs.subscribe(tree => {
 			this.pagetree = tree;
 		});
-		this.greybackProvider.pageAddObs.subscribe(data => {
+		this.pageProvider.pageAddObs.subscribe(data => {
 			this.pageAdd = data;
 		});
-		this.greybackProvider.pageSortObs.subscribe(data => {
+		this.pageProvider.pageSortObs.subscribe(data => {
 			this.pageSort = data;
 		});
 	}
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad PageTreePage');
+		this.refresh();
 	}
 
 }

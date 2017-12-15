@@ -1,8 +1,10 @@
 <ul>
 	<li *ngFor="let page of pages">
 		<div>
+			<ion-icon *ngIf="!pageSort && !pageAdd && !clipboard && !pageMultiple" name="ios-create-outline" (click)="edit(page)"></ion-icon>
 			<ion-icon *ngIf="pageSort" name="ios-remove-circle-outline" (click)="clip(page)"></ion-icon>
 			<ion-icon *ngIf="pageAdd" name="ios-add-circle-outline" (click)="add(page)"></ion-icon>
+			<ion-icon *ngIf="pageMultiple" name="ios-add-circle-outline" (click)="multiple(page)"></ion-icon>
 			{{page.title}}
 			<ion-icon name="ios-arrow-dropdown-outline" *ngIf="clipboard && ((page._lft < clipboard._lft)||(page._rgt > clipboard._rgt))"
 			 (click)="after(page)"></ion-icon>

@@ -4,14 +4,12 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-@IonicPage({
-	defaultHistory: ['PageTreePage']
-})
+@IonicPage()
 @Component({
-	selector: 'page-page-create',
-	templateUrl: 'page-create.html',
+	selector: 'page-page-multiple',
+	templateUrl: 'page-multiple.html',
 })
-export class PageCreatePage {
+export class PageMultiplePage {
 	parent: any;
 	templates: any;
 
@@ -38,7 +36,7 @@ export class PageCreatePage {
 			console.log(['invalid',this.formPageCreate.value]);
 		} else {
 			console.log(['valid',this.formPageCreate.value]);
-			this.pageProvider.create(this.formPageCreate.value).then(result => {
+			this.pageProvider.createMultiple(this.formPageCreate.value).then(result => {
 				this.pageProvider.clear();
 				this.navCtrl.setRoot('PagesPage');
 			});
@@ -46,7 +44,7 @@ export class PageCreatePage {
 	}
 
 	ionViewDidLoad() {
-		console.log('ionViewDidLoad PageCreatePageXX');
+		console.log('ionViewDidLoad PageMultiplePage');
 	}
 
 }

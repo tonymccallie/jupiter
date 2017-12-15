@@ -9,5 +9,24 @@
 </ion-header>
 
 <ion-content padding>
-
+	<ion-grid>
+		<ion-row>
+			<ion-col col-12 col-md-3 push-md-9>
+				<ion-row>
+					<ion-col col-4 col-md-12>
+						<button ion-button block outline=true icon-left (click)="add()">
+							<ion-icon name="ios-add-circle-outline"></ion-icon>Add Template</button>
+					</ion-col>
+				</ion-row>
+			</ion-col>
+			<ion-col col-12 col-md-9 pull-md-3>
+				<ion-card>
+					<ion-list>
+						<button ion-item icon-left *ngFor="let template of templates" (click)="edit(template)">
+							<ion-icon name="ios-create-outline"></ion-icon>{{ template.title }}</button>
+					</ion-list>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 </ion-content>

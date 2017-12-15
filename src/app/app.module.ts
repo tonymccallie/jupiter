@@ -2,14 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
-import { MomentModule } from 'angular2-moment';
-
-import { MyApp } from './app.component';
-import { SharedModule } from './shared.module';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+//3rd party
+import { MomentModule } from 'angular2-moment';
+//local
+import { MyApp } from './app.component';
+import { SharedModule } from './shared.module';
 import { GreybackProvider } from './../providers/greyback/greyback';
+import { PageProvider } from '../providers/page/page';
+import { HttpClientModule } from '@angular/common/http';
+import { VariableProvider } from '../providers/variable/variable';
+import { TemplateProvider } from '../providers/template/template';
 
 @NgModule({
 	declarations: [
@@ -20,7 +24,8 @@ import { GreybackProvider } from './../providers/greyback/greyback';
 		HttpModule,
 		IonicModule.forRoot(MyApp, { mode: 'ios' }),
 		MomentModule,
-		SharedModule
+		SharedModule,
+		HttpClientModule
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [
@@ -31,7 +36,10 @@ import { GreybackProvider } from './../providers/greyback/greyback';
 		SplashScreen,
 		{ provide: ErrorHandler, useClass: IonicErrorHandler },
 		GreybackProvider,
-		SharedModule
+		SharedModule,
+		PageProvider,
+		VariableProvider,
+		TemplateProvider
 	]
 })
 export class AppModule { }

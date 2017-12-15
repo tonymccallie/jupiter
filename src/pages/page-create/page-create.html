@@ -9,15 +9,17 @@
 
 <ion-content padding>
 	<ion-card>
-		<p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
 		<form [formGroup]="formPageCreate">
 			<ion-list>
+				<ion-item *ngIf="submitAttempt" text-center>
+					<p style="color: #ea6153;">Please fill out all details accurately.</p>
+				</ion-item>
 				<ion-item>
 					<ion-label fixed>Title</ion-label>
 					<ion-input type="text" formControlName="title" placeholder="Title" [class.invalid]="!formPageCreate.controls.title.valid && (formPageCreate.controls.title.dirty || submitAttempt)"></ion-input>
-					<ion-input type="text" formControlName="parent_id" value="{{ !!parent ? parent.id : null }}"></ion-input>
+					<ion-input type="hidden" formControlName="parent_id" value="{{ !!parent ? parent.id : null }}"></ion-input>
 				</ion-item>
-				<ion-item *ngIf="!formPageCreate.controls.title.valid  && (formPageCreate.controls.title.dirty || submitAttempt)">
+				<ion-item  text-center *ngIf="!formPageCreate.controls.title.valid  && (formPageCreate.controls.title.dirty || submitAttempt)">
 					<p>Please enter a valid title.</p>
 				</ion-item>
 				<ion-item>
@@ -26,9 +28,12 @@
 				</ion-item>
 				<ion-item>
 					<ion-label>Template</ion-label>
-					<ion-select formControlName="template_id">
+					<ion-select formControlName="template_id" [class.invalid]="!formPageCreate.controls.template_id.valid && (formPageCreate.controls.template_id.dirty || submitAttempt)">
 						<ion-option *ngFor="let template of templates" [value]="template.id" [attr.selected]="template.title == 'Default'? true : null">{{ template.title }}</ion-option>
 					</ion-select>
+				</ion-item>
+				<ion-item  text-center *ngIf="!formPageCreate.controls.template_id.valid  && (formPageCreate.controls.template_id.dirty || submitAttempt)">
+					<p>Please choose a template.</p>
 				</ion-item>
 				<ion-item>
 					<ion-label>Hidden</ion-label>

@@ -5,6 +5,10 @@
 		</button>
 		<ion-title>
 			<ion-icon name="ios-paper-outline"></ion-icon> Pages</ion-title>
+		<ion-buttons end>
+				<button ion-button block outline=true icon-left (click)="refresh()">
+						<ion-icon name="ios-checkmark-circle-outline"></ion-icon>Refresh</button>
+		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -21,9 +25,9 @@
 							<ion-icon name="ios-add-circle-outline"></ion-icon>Add Page</button>
 					</ion-col>
 					<ion-col col-4 col-md-12>
-						<button ion-button block outline=true icon-left (click)="refresh()">
-							<ion-icon name="ios-checkmark-circle-outline"></ion-icon>Refresh</button>
-					</ion-col>
+							<button ion-button block outline=true icon-left (click)="multiple()">
+								<ion-icon name="ios-add-circle-outline"></ion-icon>Add Multiple</button>
+						</ion-col>
 				</ion-row>
 				<ion-row *ngIf="clipboard || pageAdd || pageSort">
 					<ion-col col-12>

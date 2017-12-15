@@ -1,25 +1,31 @@
+import { TemplateProvider } from './../../providers/template/template';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the TemplatesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
-  selector: 'page-templates',
-  templateUrl: 'templates.html',
+	selector: 'page-templates',
+	templateUrl: 'templates.html',
 })
 export class TemplatesPage {
+	templates: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+	constructor(public navCtrl: NavController, public navParams: NavParams, public templateProvider: TemplateProvider) {
+		this.templateProvider.list().then(templates => {
+			this.templates = templates;
+		})
+	}
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TemplatesPage');
-  }
+	edit(template) {
+		this.navCtrl.push('TemplateEditPage', { id: template.id });
+	}
+
+	add() {
+		this.navCtrl.push('TemplateCreatePage');
+	}
+
+	ionViewDidLoad() {
+		console.log('ionViewDidLoad TemplatesPage');
+	}
 
 }

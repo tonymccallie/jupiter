@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { GreybackProvider } from '../../providers/greyback/greyback';
+import { PageProvider } from './../../providers/page/page';
 
 @Component({
 	selector: 'tree-view',
@@ -11,23 +11,28 @@ export class TreeViewComponent {
 	@Input('pages') pages: any[];
 	clipboard: any;
 	pageAdd: boolean;
+	pageMultiple: boolean;
 	pageSort: boolean;
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, public greybackProvider: GreybackProvider) {
+	constructor(public navCtrl: NavController, public navParams: NavParams, public pageProvider: PageProvider) {
 
 	}
 
 	ngOnInit() {
 		console.log('ngOnInit TreeViewComponent');
-		this.greybackProvider.clipboardObs.subscribe(data => {
+		this.pageProvider.clipboardObs.subscribe(data => {
 			this.clipboard = data;
 		});
 
-		this.greybackProvider.pageAddObs.subscribe(data => {
+		this.pageProvider.pageAddObs.subscribe(data => {
 			this.pageAdd = data;
 		});
 
-		this.greybackProvider.pageSortObs.subscribe(data => {
+		this.pageProvider.pageAddMultipleObs.subscribe(data => {
+			this.pageMultiple = data;
+		});
+
+		this.pageProvider.pageSortObs.subscribe(data => {
 			this.pageSort = data;
 		});
 	}
@@ -35,7 +40,7 @@ export class TreeViewComponent {
 	clip(page) {
 		//this.pages[this.pages.indexOf(page)].clipped = 'med';
 		//console.log(this.pages);
-		this.greybackProvider.clipboard(page);
+		this.pageProvider.clipboard(page);
 	}
 
 	add(page) {
@@ -43,17 +48,25 @@ export class TreeViewComponent {
 		this.navCtrl.push('PageCreatePage', { page: page });
 	}
 
+	multiple(page) {
+		this.navCtrl.push('PageMultiplePage', { page: page });
+	}
+
 	under(page) {
-		this.greybackProvider.under(page).subscribe(result => {
+		this.pageProvider.under(page).then(result => {
 			console.log(result);
-			this.greybackProvider.pagetree(result);
+			this.pageProvider.pagetree(result);
 		});
 	}
 
 	after(page) {
-		this.greybackProvider.after(page).subscribe(result => {
+		this.pageProvider.after(page).then(result => {
 			console.log(result);
-			this.greybackProvider.pagetree(result);
+			this.pageProvider.pagetree(result);
 		});
+	}
+
+	edit(page) {
+		this.navCtrl.push('PageEditPage', { 'id': page.id });
 	}
 }

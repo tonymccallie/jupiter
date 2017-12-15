@@ -1,19 +1,18 @@
 ion-menu {
 	ion-content {
-		background-color: #2D4364 !important;
+		background-color: #454e5f !important;
 		color: #ffffff;
 	}
-
 	.item-ios {
 		background-color: transparent !important;
 	}
-
 	button.item-ios {
 		color: #ffffff;
 	}
-
 	ion-list-header {
-		color: color($colors,'primary') !important;
+		color: color($colors, 'primary') !important;
+		font-weight: 500 !important;
+		font-size: 9px !important;
+		letter-spacing: 1px !important;
 	}
 }
-
