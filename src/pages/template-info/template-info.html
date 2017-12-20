@@ -1,0 +1,27 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Template Info</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-left (click)="close()">
+				<ion-icon name="ios-close-circle-outline"></ion-icon> Close</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<form>
+		<ion-list>
+			<ion-item>
+				<ion-label fixed>Title</ion-label>
+				<ion-input type="text" name="title" [(ngModel)]="template.title"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label fixed>Filename</ion-label>
+				<ion-input type="text" name="file" [(ngModel)]="template.file"></ion-input>
+			</ion-item>
+			<ion-item>
+				<button ion-button (click)="save()">Save Changes</button>
+			</ion-item>
+		</ion-list>
+	</form>
+</ion-content>

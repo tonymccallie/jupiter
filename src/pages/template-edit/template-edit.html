@@ -5,42 +5,137 @@
 		</button>
 		<ion-title>
 			<ion-icon name="ios-options-outline"></ion-icon> Edit Template</ion-title>
+		<ion-buttons end>
+			<button ion-button outline="false" (click)="info()">
+				<ion-icon name="ios-information-circle-outline"></ion-icon>
+			</button>
+		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-	<ion-grid>
-		<ion-row>
-			<ion-col col-12 col-md-3 push-md-9>
-				<ion-row>
-					<ion-col col-4 col-md-12>
-						<button ion-button block outline=true icon-left (click)="addBlock()">
-							<ion-icon name="ios-add-circle-outline"></ion-icon>Add Block</button>
-					</ion-col>
-					<ion-col col-4 col-md-12>
-							<button ion-button block outline=true icon-left (click)="addRow()">
-								<ion-icon name="ios-add-circle-outline"></ion-icon>Add Row</button>
-						</ion-col>
-				</ion-row>
-			</ion-col>
-			<ion-col col-12 col-md-9 pull-md-3>
-				<ion-card>
-					<ion-grid>
-						<ion-row *ngFor="let row of grid">
-							<ion-col *ngFor="let col of row" [ngClass]="{'col-3': col.span == 3,'col-4': col.span == 4,'col-5': col.span == 5,'col-6': col.span == 6,'col-7': col.span == 7,'col-8': col.span == 8,'col-9': col.span == 9,'col-10': col.span == 10,'col-11': col.span == 11,'col-12': col.span == 12}">
-								<div>
-									<ion-icon name="ios-create-outline"></ion-icon> {{ col.title }}
-									<ion-icon float-end name="ios-add-circle-outline" (click)="grow(col)"></ion-icon>
-									<ion-icon float-end name="ios-remove-circle-outline" (click)="shrink(col)"></ion-icon>
+	<ion-slides #templateSlider>
+		<ion-slide>
+			<ion-card>
+				<ion-grid>
+					<ion-row *ngFor="let row of grid; let rowIndex = index">
+						<ion-col *ngFor="let col of row; let colIndex = index" [ngClass]="{'col-3': col.span == 3,'col-4': col.span == 4,'col-5': col.span == 5,'col-6': col.span == 6,'col-7': col.span == 7,'col-8': col.span == 8,'col-9': col.span == 9,'col-10': col.span == 10,'col-11': col.span == 11,'col-12': col.span == 12}">
+							<div text-left>
+								{{ col.title }}
+							</div>
+							<div>
+								<div *ngFor="let element of col.children">
+									{{ plugins[element.controller + ':' + element.action].title }}
 								</div>
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</ion-card>
-			</ion-col>
-		</ion-row>
-	</ion-grid>
-	<pre>
-		{{ grid | json}}
-	</pre>
+							</div>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-12 col-md-3 push-md-9 >
+							<ion-row>
+								<ion-row>
+									<!-- <ion-col col-4 col-md-12>
+												<button ion-button block outline=true icon-left (click)="sortBlocks()">
+													<ion-icon name="ios-remove-circle-outline"></ion-icon>Sort Blocks</button>
+											</ion-col> -->
+									<ion-col col-4 col-md-12>
+										<button ion-button block outline=true icon-left (click)="addBlock()">
+											<ion-icon name="ios-add-circle-outline"></ion-icon>Add Block</button>
+									</ion-col>
+									<ion-col col-4 col-md-12>
+										<button ion-button block outline=true icon-left (click)="addRow()">
+											<ion-icon name="ios-add-circle-outline"></ion-icon>Add Row</button>
+									</ion-col>
+									<ion-col col-4 col-md-12>
+										<button ion-button block outline=true icon-left (click)="saveTemplate()">
+											<ion-icon name="ios-remove-circle-outline"></ion-icon>Save</button>
+									</ion-col>
+									<!-- <ion-col col-4 col-md-12>
+												<button ion-button block outline=true icon-left (click)="addRow()">
+													<ion-icon name="ios-add-circle-outline"></ion-icon>Add Row</button>
+											</ion-col> -->
+									<ion-col col-12>
+										<ion-list *ngIf="layoutClipboard">
+											<ion-item>{{ layoutClipboard[0].title }}</ion-item>
+										</ion-list>
+									</ion-col>
+								</ion-row>
+							</ion-row>
+					</ion-col>
+					<ion-col col-12 col-md-9 pull-md-3>
+						<ion-card>
+							<ion-grid>
+								<ion-row *ngFor="let row of grid; let rowIndex = index">
+									<ion-col *ngFor="let col of row; let colIndex = index" [ngClass]="{'col-3': col.span == 3,'col-4': col.span == 4,'col-5': col.span == 5,'col-6': col.span == 6,'col-7': col.span == 7,'col-8': col.span == 8,'col-9': col.span == 9,'col-10': col.span == 10,'col-11': col.span == 11,'col-12': col.span == 12}">
+										<div text-left [ngClass]='{"enabled":col.enabled}'>
+											<ion-icon name="ios-remove-circle-outline" (click)="grabBlock(rowIndex, colIndex)"></ion-icon>
+											<span (click)="editBlock(col)">{{ col.title }}</span>
+											<ion-icon float-end name="ios-arrow-dropright-outline" (click)="grow(col)"></ion-icon>
+											<ion-icon float-end name="ios-arrow-dropleft-outline" (click)="shrink(col)"></ion-icon>
+											<ion-icon float-end name="ios-trash-outline" (click)="deleteBlock(rowIndex, colIndex)"></ion-icon>
+										</div>
+									</ion-col>
+									<ion-col *ngIf="layoutClipboard" col-4 (click)="placeBlock(rowIndex)">
+										<div class="paste">
+											<ion-icon name="ios-add-circle-outline"></ion-icon>
+											<em>Paste</em>
+										</div>
+									</ion-col>
+									<ion-col *ngIf="!row.length" col-4>
+										<div class="paste" icon-left (click)="deleteRow(rowIndex)">
+											<ion-icon name="ios-trash-outline"></ion-icon> Delete Row
+										</div>
+									</ion-col>
+								</ion-row>
+							</ion-grid>
+						</ion-card>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<form [formGroup]="formTemplateEdit" *ngIf="template">
+					<input type="hidden" formControlName="id">
+					<ion-list>
+						<ion-item *ngIf="submitAttempt" text-center>
+							<p style="color: #ea6153;">Please fill out all details accurately.</p>
+						</ion-item>
+						<ion-item>
+							<ion-label stacked>Title</ion-label>
+							<ion-input type="text" formControlName="title" placeholder="Title" [class.invalid]="!formTemplateEdit.controls.title.valid && (formTemplateEdit.controls.title.dirty || submitAttempt)"></ion-input>
+						</ion-item>
+						<ion-item text-center *ngIf="!formTemplateEdit.controls.title.valid  && (formTemplateEdit.controls.title.dirty || submitAttempt)">
+							<p>Please enter a valid title.</p>
+						</ion-item>
+						<ion-item>
+							<ion-label stacked>Filename</ion-label>
+							<ion-input type="text" formControlName="file" placeholder="Filename" [class.invalid]="!formTemplateEdit.controls.file.valid && (formTemplateEdit.controls.file.dirty || submitAttempt)"></ion-input>
+						</ion-item>
+						<ion-item text-center *ngIf="!formTemplateEdit.controls.file.valid  && (formTemplateEdit.controls.file.dirty || submitAttempt)">
+							<p>Please enter a valid file.</p>
+						</ion-item>
+						<ion-item>
+							<button ion-button color="primary" (click)="saveTemplate()">Save Template</button>
+						</ion-item>
+					</ion-list>
+				</form>
+			</ion-card>
+		</ion-slide>
+	</ion-slides>
 </ion-content>
+
+<ion-footer>
+	<ion-toolbar>
+		<ion-segment [(ngModel)]="mode">
+			<ion-segment-button (click)="slideTo(0)" value="content">Content</ion-segment-button>
+			<ion-segment-button (click)="slideTo(1)" value="layout">Layout</ion-segment-button>
+			<ion-segment-button (click)="slideTo(2)" value="info">Info</ion-segment-button>
+		</ion-segment>
+	</ion-toolbar>
+</ion-footer>

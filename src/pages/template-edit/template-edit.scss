@@ -1,9 +1,13 @@
 page-template-edit {
 	ion-card ion-grid {
 		ion-col div {
+			//border: dashed 1px;
 			border: solid 1px;
 			margin: 1px;
 			padding: 10px;
+			ion-icon {
+				margin-right: 3px;
+			}
 		}
 		ion-row {
 			border-bottom: solid 1px; // margin: 1px;
@@ -11,6 +15,15 @@ page-template-edit {
 			margin-bottom: 2px;
 			min-height: 40px;
 		}
+	}
+	.paste {
+		background: #f2f3f4;
+	}
+	ion-col div.enabled {
+		border: solid 1px;
+	}
+	ion-slides {
+		height: auto;
 	}
 	@for $i from 1 through 12 {
 		.col-#{$i} {

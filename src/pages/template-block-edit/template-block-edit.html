@@ -1,0 +1,42 @@
+<ion-header>
+
+	<ion-navbar>
+		<ion-title>Template Block</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-left (click)="close()">
+				<ion-icon name="ios-close-circle-outline"></ion-icon> Close</button>
+		</ion-buttons>
+	</ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<form>
+		<ion-list>
+			<ion-item>
+				<ion-label fixed>Title</ion-label>
+				<ion-input type="text" name="title" [(ngModel)]="block.title"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label fixed>Slug</ion-label>
+				<ion-input type="text" name="slug" [(ngModel)]="block.slug"></ion-input>
+			</ion-item>
+			<ion-item>
+					<ion-label fixed>Description</ion-label>
+					<ion-input type="text" name="descr" [(ngModel)]="block.descr"></ion-input>
+				</ion-item>
+			<ion-item>
+					<ion-label fixed>Span</ion-label>
+					<ion-input type="text" name="span" [(ngModel)]="block.span"></ion-input>
+				</ion-item>
+			<ion-item>
+				<ion-label>Available on Content Pages?</ion-label>
+				<ion-checkbox name="enabled" [(ngModel)]="block.enabled"></ion-checkbox>
+			</ion-item>
+			<ion-item>
+				<button ion-button (click)="save()">Done</button>
+			</ion-item>
+		</ion-list>
+	</form>
+</ion-content>

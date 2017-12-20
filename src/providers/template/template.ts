@@ -25,9 +25,20 @@ export class TemplateProvider {
 	get(templateId) {
 		return new Promise(resolve => {
 			this.http.get(this.rootUrl + 'template/' + templateId).subscribe(
-				data => {resolve(data)},
+				data => { resolve(data) },
 				err => {
-					console.warn(['get',err]);
+					console.warn(['get', err]);
+				}
+			)
+		});
+	}
+
+	save(template) {
+		return new Promise(resolve => {
+			this.http.put(this.rootUrl + 'template/' + template.id, template).subscribe(
+				data => { resolve(data) },
+				err => {
+					console.warn(['save', err]);
 				}
 			)
 		});
