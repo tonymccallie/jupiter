@@ -24,48 +24,55 @@
 								{{ col.title }}
 							</div>
 							<div>
-								<div *ngFor="let element of col.children">
+								<div *ngFor="let element of col.children; let childIndex = index">
+									<ion-icon name="ios-remove-circle-outline" (click)="grabElement(rowIndex, colIndex, childIndex)"></ion-icon>
 									{{ plugins[element.controller + ':' + element.action].title }}
+								</div>
+								<div *ngIf="contentClipboard" (click)="placeElement(col)">
+									PASTE
 								</div>
 							</div>
 						</ion-col>
 					</ion-row>
 				</ion-grid>
 			</ion-card>
+			<ion-card *ngIf="contentClipboard">
+				{{contentClipboard | json}}
+			</ion-card>
 		</ion-slide>
 		<ion-slide>
 			<ion-grid>
 				<ion-row>
-					<ion-col col-12 col-md-3 push-md-9 >
+					<ion-col col-12 col-md-3 push-md-9>
+						<ion-row>
 							<ion-row>
-								<ion-row>
-									<!-- <ion-col col-4 col-md-12>
+								<!-- <ion-col col-4 col-md-12>
 												<button ion-button block outline=true icon-left (click)="sortBlocks()">
 													<ion-icon name="ios-remove-circle-outline"></ion-icon>Sort Blocks</button>
 											</ion-col> -->
-									<ion-col col-4 col-md-12>
-										<button ion-button block outline=true icon-left (click)="addBlock()">
-											<ion-icon name="ios-add-circle-outline"></ion-icon>Add Block</button>
-									</ion-col>
-									<ion-col col-4 col-md-12>
-										<button ion-button block outline=true icon-left (click)="addRow()">
-											<ion-icon name="ios-add-circle-outline"></ion-icon>Add Row</button>
-									</ion-col>
-									<ion-col col-4 col-md-12>
-										<button ion-button block outline=true icon-left (click)="saveTemplate()">
-											<ion-icon name="ios-remove-circle-outline"></ion-icon>Save</button>
-									</ion-col>
-									<!-- <ion-col col-4 col-md-12>
+								<ion-col col-4 col-md-12>
+									<button ion-button block outline=true icon-left (click)="addBlock()">
+										<ion-icon name="ios-add-circle-outline"></ion-icon>Add Block</button>
+								</ion-col>
+								<ion-col col-4 col-md-12>
+									<button ion-button block outline=true icon-left (click)="addRow()">
+										<ion-icon name="ios-add-circle-outline"></ion-icon>Add Row</button>
+								</ion-col>
+								<ion-col col-4 col-md-12 *ngIf="layoutChanged">
+									<button ion-button block outline=true icon-left (click)="saveTemplate()">
+										<ion-icon name="ios-checkmark-circle-outline"></ion-icon>Save</button>
+								</ion-col>
+								<!-- <ion-col col-4 col-md-12>
 												<button ion-button block outline=true icon-left (click)="addRow()">
 													<ion-icon name="ios-add-circle-outline"></ion-icon>Add Row</button>
 											</ion-col> -->
-									<ion-col col-12>
-										<ion-list *ngIf="layoutClipboard">
-											<ion-item>{{ layoutClipboard[0].title }}</ion-item>
-										</ion-list>
-									</ion-col>
-								</ion-row>
+								<ion-col col-12>
+									<ion-list *ngIf="layoutClipboard">
+										<ion-item>{{ layoutClipboard[0].title }}</ion-item>
+									</ion-list>
+								</ion-col>
 							</ion-row>
+						</ion-row>
 					</ion-col>
 					<ion-col col-12 col-md-9 pull-md-3>
 						<ion-card>

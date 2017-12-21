@@ -25,6 +25,7 @@ export class TemplateEditPage {
 	plugins: any;
 	blockDelete: boolean = false;
 	blockMove: boolean = false;
+	layoutChanged: boolean = false;
 
 	/*
 	Modes:
@@ -45,28 +46,35 @@ export class TemplateEditPage {
 		public variableProvider: VariableProvider,
 		public alertController: AlertController
 	) {
-		this.templateProvider.get(this.navParams.get('id')).then(template => {
-			this.plugins = variableProvider.plugins;
-			this.template = template;
-			this.grid = JSON.parse(this.template.json);
-			this.template.elements.forEach(element => {
-				this.grid.forEach(row => {
-					row.forEach(col => {
-						if (element.location == col.slug) {
-							if (!col.children) {
-								col.children = [];
-							}
-							col.children.push(element);
-						}
-					});
-				});
-			});
-
-			this.formTemplateEdit = formBuilder.group({
+		this._buildTemplate().then(data => {
+			this.formTemplateEdit = this.formBuilder.group({
 				title: [this.template.title, Validators.compose([Validators.required, Validators.minLength(1)])],
 				file: [this.template.file, Validators.compose([Validators.required, Validators.minLength(1)])],
 				id: this.template.id
 			});
+		});
+	}
+
+	_buildTemplate() {
+		return new Promise(resolve => {
+			this.templateProvider.get(this.navParams.get('id')).then(template => {
+				this.plugins = this.variableProvider.plugins;
+				this.template = template;
+				this.grid = JSON.parse(this.template.json);
+				this.template.elements.forEach(element => {
+					this.grid.forEach(row => {
+						row.forEach(col => {
+							if (element.location == col.slug) {
+								if (!col.children) {
+									col.children = [];
+								}
+								col.children.push(element);
+							}
+						});
+					});
+				});
+				resolve(true);
+			})
 		});
 	}
 
@@ -79,12 +87,14 @@ export class TemplateEditPage {
 	}
 
 	grow(col) {
+		this.layoutChanged = true;
 		if (col.span < 12) {
 			col.span++;
 		}
 	}
 
 	shrink(col) {
+		this.layoutChanged = true;
 		if (col.span > 3) {
 			col.span--;
 		}
@@ -101,6 +111,7 @@ export class TemplateEditPage {
 		};
 		this.grid[this.grid.length - 1].push(block);
 		this.editBlock(block);
+		this.layoutChanged = true;
 	}
 
 	deleteBlock(rowIndex, colIndex) {
@@ -121,14 +132,17 @@ export class TemplateEditPage {
 			]
 		});
 		alert.present();
+		this.layoutChanged = true;
 	}
 
 	addRow() {
 		this.grid.push([]);
+		this.layoutChanged = true;
 	}
 
 	deleteRow(rowIndex) {
 		this.grid.splice(rowIndex, 1);
+		this.layoutChanged = true;
 	}
 
 	editBlock(block) {
@@ -144,6 +158,7 @@ export class TemplateEditPage {
 		// });
 
 		blockModal.present();
+		this.layoutChanged = true;
 	}
 
 	grabBlock(rowIndex, colIndex) {
@@ -153,11 +168,21 @@ export class TemplateEditPage {
 	placeBlock(rowIndex) {
 		this.grid[rowIndex].push(this.layoutClipboard[0]);
 		this.layoutClipboard = null;
+		this.layoutChanged = true;
+	}
+
+	grabElement(rowIndex, colIndex, childIndex) {
+		this.contentClipboard = this.grid[rowIndex][colIndex].children.splice(childIndex,1);
+	}
+
+	placeElement(col) {
+		console.log(col);
 	}
 
 	saveTemplate() {
 		if (!this.formTemplateEdit.valid) {
 			this.submitAttempt = true;
+			this.slideTo(2);
 		} else {
 			let data = this.formTemplateEdit.value;
 			let jsonObj = this.grid;
@@ -167,9 +192,12 @@ export class TemplateEditPage {
 				});
 			})
 			data.json = JSON.stringify(jsonObj);
-				this.templateProvider.save(data).then(result => {
-					this.navCtrl.setRoot('TemplateEditPage', { id: data.id });
+			this.templateProvider.save(data).then(result => {
+				this._buildTemplate().then(data => {
+					this.slideTo(0);
+					this.layoutChanged = false;
 				});
+			});
 		}
 	}
 
