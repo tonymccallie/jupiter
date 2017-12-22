@@ -33,12 +33,36 @@ export class TemplateProvider {
 		});
 	}
 
+	place(col, elementIndex, element) {
+		return new Promise(resolve => {
+			this.http.put(this.rootUrl + 'template_element/' + element.id, {column: col, element: element, index: elementIndex}).subscribe(
+				data => { resolve(data) },
+				err => {
+					console.warn(['place', err]);
+				}
+			)
+		});
+	}
+
 	save(template) {
 		return new Promise(resolve => {
 			this.http.put(this.rootUrl + 'template/' + template.id, template).subscribe(
 				data => { resolve(data) },
 				err => {
 					console.warn(['save', err]);
+				}
+			)
+		});
+	}
+
+	createElement(element) {
+		return new Promise(resolve => {
+			this.http.post(this.rootUrl + 'template_element', element).subscribe(
+				data => {
+					resolve(data);
+				},
+				err => {
+					console.warn(['createElement', err]);
 				}
 			)
 		});

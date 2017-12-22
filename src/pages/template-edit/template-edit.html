@@ -17,27 +17,55 @@
 	<ion-slides #templateSlider>
 		<ion-slide>
 			<ion-card>
+				<ion-card-header text-left>Template Content</ion-card-header>
 				<ion-grid>
 					<ion-row *ngFor="let row of grid; let rowIndex = index">
 						<ion-col *ngFor="let col of row; let colIndex = index" [ngClass]="{'col-3': col.span == 3,'col-4': col.span == 4,'col-5': col.span == 5,'col-6': col.span == 6,'col-7': col.span == 7,'col-8': col.span == 8,'col-9': col.span == 9,'col-10': col.span == 10,'col-11': col.span == 11,'col-12': col.span == 12}">
 							<div text-left>
+								<ion-icon float-right name="ios-add-circle-outline" *ngIf="!contentClipboard?.length" (click)="addElement(rowIndex, colIndex, col)"></ion-icon>
 								{{ col.title }}
+								<ion-icon *ngIf="contentClipboard?.length" name="ios-arrow-dropdown-outline" (click)="placeElement(col, 0)"></ion-icon>
 							</div>
 							<div>
-								<div *ngFor="let element of col.children; let childIndex = index">
+								<div text-left *ngFor="let element of col.children; let childIndex = index">
 									<ion-icon name="ios-remove-circle-outline" (click)="grabElement(rowIndex, colIndex, childIndex)"></ion-icon>
-									{{ plugins[element.controller + ':' + element.action].title }}
-								</div>
-								<div *ngIf="contentClipboard" (click)="placeElement(col)">
-									PASTE
+									<span (click)="editElement(element)">{{ plugins[element.controller + ':' + element.action].title }}</span>
+									<ion-icon *ngIf="contentClipboard?.length" name="ios-arrow-dropdown-outline" (click)="placeElement(col, childIndex + 1)"></ion-icon>
 								</div>
 							</div>
 						</ion-col>
 					</ion-row>
 				</ion-grid>
 			</ion-card>
-			<ion-card *ngIf="contentClipboard">
-				{{contentClipboard | json}}
+			<div class="spacer" style="height:30px"></div>
+			<ion-card class="archive">
+				<ion-card-header text-left>
+					Archive
+					<ion-icon *ngIf="contentClipboard?.length" name="ios-arrow-dropdown-outline" (click)="placeElement({slug:'null'}, 0)"></ion-icon>
+				</ion-card-header>
+				<ion-grid>
+					<ion-row>
+						<ion-col col-4 *ngFor="let element of archive; let archiveIndex of index">
+							<div>
+								<ion-icon name="ios-remove-circle-outline" (click)="grabArchiveElement(archiveIndex)"></ion-icon>
+								{{ plugins[element.controller + ':' + element.action].title }}
+							</div>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-card>
+			<ion-card *ngIf="contentClipboard?.length">
+				<ion-card-header text-left>Clipboard</ion-card-header>
+				<ion-grid>
+					<ion-row>
+						<ion-col col-4 *ngFor="let element of contentClipboard;">
+							<div>
+								<ion-icon name="ios-close-circle-outline" (click)="cancelElement()"></ion-icon>
+								{{ plugins[element.controller + ':' + element.action].title }}
+							</div>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
 			</ion-card>
 		</ion-slide>
 		<ion-slide>
@@ -76,6 +104,7 @@
 					</ion-col>
 					<ion-col col-12 col-md-9 pull-md-3>
 						<ion-card>
+							<ion-card-header text-left>Template Layout</ion-card-header>
 							<ion-grid>
 								<ion-row *ngFor="let row of grid; let rowIndex = index">
 									<ion-col *ngFor="let col of row; let colIndex = index" [ngClass]="{'col-3': col.span == 3,'col-4': col.span == 4,'col-5': col.span == 5,'col-6': col.span == 6,'col-7': col.span == 7,'col-8': col.span == 8,'col-9': col.span == 9,'col-10': col.span == 10,'col-11': col.span == 11,'col-12': col.span == 12}">
@@ -107,6 +136,7 @@
 		</ion-slide>
 		<ion-slide>
 			<ion-card>
+				<ion-card-header text-left>Template Information / Options</ion-card-header>
 				<form [formGroup]="formTemplateEdit" *ngIf="template">
 					<input type="hidden" formControlName="id">
 					<ion-list>

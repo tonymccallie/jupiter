@@ -1,0 +1,59 @@
+<ion-header>
+
+	<ion-navbar>
+		<ion-buttons start>
+			<button ion-button icon-left *ngIf="showBack" (click)="back()">
+				<ion-icon name="ios-arrow-back-outline"></ion-icon> Back</button>
+		</ion-buttons>
+		<ion-title>Choose Element Type</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-left (click)="close()">
+				<ion-icon name="ios-close-circle-outline"></ion-icon> Close</button>
+		</ion-buttons>
+	</ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+	<ion-slides #elementSlider>
+		<ion-slide>
+			<ion-grid>
+				<ion-row>
+					<ion-col col-4>
+						<button ion-button block color="white" text-center large class="primary" (click)="create({controller:'ContentController',action:'text',page:'ElementTextPage'})">
+							<ion-icon name="ios-create-outline"></ion-icon>
+							<br /> Text Editor
+						</button>
+					</ion-col>
+					<ion-col col-4>
+						<button ion-button block color="white" text-center large class="primary" (click)="create()">
+							<ion-icon name="ios-camera-outline"></ion-icon>
+							<br /> Image
+						</button>
+					</ion-col>
+					<ion-col col-4>
+						<button ion-button block color="white" text-center large class="primary" (click)="create()">
+							<ion-icon name="ios-film-outline"></ion-icon>
+							<br /> Video
+						</button>
+					</ion-col>
+				</ion-row>
+				<ion-row>
+					<ion-col col-3 *ngFor="let plugin of pluginMenu">
+						<button icon-left color="white" ion-button block (click)="next(plugin)">
+							<ion-icon name="{{plugin.icon}}"></ion-icon> {{plugin.title}}</button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-slide>
+		<ion-slide>
+			<ion-grid>
+				<ion-row>
+					<ion-col *ngFor="let element of elements" col-6>
+						<button ion-button block color="white" (click)="create(element)">{{element.title}}</button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-slide>
+	</ion-slides>
+</ion-content>

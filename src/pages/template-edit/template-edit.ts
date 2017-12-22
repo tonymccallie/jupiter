@@ -21,11 +21,17 @@ export class TemplateEditPage {
 	clipboard: any;
 	mode: string = "content";
 	layoutClipboard: any;
-	contentClipboard: any;
+	contentClipboard: any[];
+	contentPast: Object = {
+		row: null,
+		col: null,
+		child: null
+	};
 	plugins: any;
 	blockDelete: boolean = false;
 	blockMove: boolean = false;
 	layoutChanged: boolean = false;
+	archive: any[] = [];
 
 	/*
 	Modes:
@@ -55,13 +61,19 @@ export class TemplateEditPage {
 		});
 	}
 
+	ionViewDidLoad() {
+		console.log('ionViewDidLoad TemplateEditPage');
+	}
+
 	_buildTemplate() {
 		return new Promise(resolve => {
 			this.templateProvider.get(this.navParams.get('id')).then(template => {
 				this.plugins = this.variableProvider.plugins;
 				this.template = template;
 				this.grid = JSON.parse(this.template.json);
+				this.archive = [];
 				this.template.elements.forEach(element => {
+					let bolFound = false;
 					this.grid.forEach(row => {
 						row.forEach(col => {
 							if (element.location == col.slug) {
@@ -69,17 +81,17 @@ export class TemplateEditPage {
 									col.children = [];
 								}
 								col.children.push(element);
+								bolFound = true;
 							}
 						});
 					});
+					if (!bolFound) {
+						this.archive.push(element);
+					}
 				});
 				resolve(true);
 			})
 		});
-	}
-
-	ionViewDidLoad() {
-		console.log('ionViewDidLoad TemplateEditPage');
 	}
 
 	slideTo(index) {
@@ -148,15 +160,6 @@ export class TemplateEditPage {
 	editBlock(block) {
 		let blockModal = this.modalController.create('TemplateBlockEditPage', { block: block });
 
-		// blockModal.onDidDismiss(data => {
-		// 	if(data) {
-		// 		//block = data.block;
-		// 		console.log('YES');
-		// 	} else {
-		// 		console.log('NOPE');
-		// 	}
-		// });
-
 		blockModal.present();
 		this.layoutChanged = true;
 	}
@@ -171,12 +174,63 @@ export class TemplateEditPage {
 		this.layoutChanged = true;
 	}
 
-	grabElement(rowIndex, colIndex, childIndex) {
-		this.contentClipboard = this.grid[rowIndex][colIndex].children.splice(childIndex,1);
+	addElement(rowIndex, colIndex, col) {
+		let element = {
+			template_id: this.template.id,
+			location: col.slug
+		};
+		let blockModal = this.modalController.create('ElementListPage', { element: element });
+		blockModal.onDidDismiss(result => {
+			if (result) {
+				this._buildTemplate().then(data => {
+					this.navCtrl.push(result.page, { element: result.element, id: result.element.id });
+				});
+			} else {
+				console.log('NOPE');
+			}
+		});
+		blockModal.present();
+		this.layoutChanged = true;
 	}
 
-	placeElement(col) {
-		console.log(col);
+	editElement(element) {
+		this.navCtrl.push(this.plugins[element.controller + ":" + element.action].page, { element: element, id: element.id });
+	}
+
+	grabElement(rowIndex, colIndex, childIndex) {
+		this.contentClipboard = this.grid[rowIndex][colIndex].children.splice(childIndex, 1);
+		this.contentPast = {
+			row: rowIndex,
+			col: colIndex,
+			child: childIndex
+		};
+	}
+
+	cancelElement() {
+		let element = this.contentClipboard.pop();
+		if (this.contentPast['row']) {
+			this.grid[this.contentPast['row']][this.contentPast['col']].children.push(element);
+		} else {
+			this.archive.push(element);
+		}
+	}
+
+	grabArchiveElement(archiveIndex) {
+		this.contentClipboard = this.archive.splice(archiveIndex, 1);
+		this.contentPast = {
+			row: null,
+			col: null,
+			child: null
+		};
+	}
+
+	placeElement(col, elementIndex) {
+		this.templateProvider.place(col, elementIndex, this.contentClipboard[0]).then(data => {
+			this._buildTemplate().then(data => {
+				this.slideTo(0);
+				this.contentClipboard = [];
+			});
+		});
 	}
 
 	saveTemplate() {

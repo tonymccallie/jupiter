@@ -1,0 +1,17 @@
+page-element-list {
+	ion-slides {
+		height: auto;
+	}
+	.primary {
+		height:80px;
+		padding-top: 10px;
+		.button-inner {
+			display: block;
+		}
+		ion-icon {
+			font-size: 26px;
+			line-height: 30px;
+			// width: 100;
+		}
+	}
+}
