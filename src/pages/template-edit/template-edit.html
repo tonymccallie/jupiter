@@ -38,7 +38,7 @@
 				</ion-grid>
 			</ion-card>
 			<div class="spacer" style="height:30px"></div>
-			<ion-card class="archive">
+			<ion-card class="archive" *ngIf="archive?.length">
 				<ion-card-header text-left>
 					Archive
 					<ion-icon *ngIf="contentClipboard?.length" name="ios-arrow-dropdown-outline" (click)="placeElement({slug:'null'}, 0)"></ion-icon>
@@ -159,6 +159,10 @@
 						</ion-item>
 						<ion-item>
 							<button ion-button color="primary" (click)="saveTemplate()">Save Template</button>
+						</ion-item>
+						<ion-item>
+							<ion-label>Start Date</ion-label>
+							<ion-datetime name="start" displayFormat="MM/DD/YYYY"></ion-datetime>
 						</ion-item>
 					</ion-list>
 				</form>

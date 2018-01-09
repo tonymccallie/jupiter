@@ -35,7 +35,7 @@ export class TemplateProvider {
 
 	place(col, elementIndex, element) {
 		return new Promise(resolve => {
-			this.http.put(this.rootUrl + 'template_element/' + element.id, {column: col, element: element, index: elementIndex}).subscribe(
+			this.http.put(this.rootUrl + 'place_template_element/' + element.id, {column: col, element: element, index: elementIndex}).subscribe(
 				data => { resolve(data) },
 				err => {
 					console.warn(['place', err]);

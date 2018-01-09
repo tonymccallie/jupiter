@@ -1,12 +1,54 @@
 <ion-header no-border>
-		<ion-navbar>
-			<ion-title center>Edit Text</ion-title>
-			<button ion-button icon-only menuToggle>
-				<ion-icon name="menu"></ion-icon>
-			</button>
-		</ion-navbar>
-	</ion-header>
+	<ion-navbar>
+		<ion-title center>Edit Text</ion-title>
+		<button ion-button icon-only menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+	</ion-navbar>
+</ion-header>
 
 <ion-content padding>
-	{{ element | json }}
+	<ion-card *ngIf="element && !advanced">
+		<jodit [elementId]="'element-text-editor'" [content]="element.content[0].body" (onChange)="change($event)"></jodit>
+	</ion-card>
+	<ion-card *ngIf="element && advanced">
+		<ion-card-header>
+			Info
+		</ion-card-header>
+		<ion-card-content>
+			<form>
+				<ion-list>
+					<ion-item>
+						<ion-label>Start Date</ion-label>
+						<ion-datetime name="start_date" displayFormat="MM/DD/YYYY" [(ngModel)]="start_date" min="{{ curYear }}" max="{{ curYear + 5}}"></ion-datetime>
+					</ion-item>
+					<ion-item>
+						<ion-label>Start Time</ion-label>
+						<ion-datetime name="start_time" displayFormat="hh:00 a" pickerFormat="hh a" [(ngModel)]="start_time"></ion-datetime>
+					</ion-item>
+					<ion-item>
+						<ion-label>Stop Date</ion-label>
+						<ion-datetime name="stop_date" displayFormat="MM/DD/YYYY" [(ngModel)]="stop_date" min="{{ curYear }}" max="{{ curYear + 5}}"></ion-datetime>
+					</ion-item>
+					<ion-item>
+						<ion-label>Stop Time</ion-label>
+						<ion-datetime name="stop_time" displayFormat="hh:00 a" pickerFormat="hh a" [(ngModel)]="stop_time"></ion-datetime>
+					</ion-item>
+					<ion-item>
+						<button ion-button (click)="clear()">Clear Times</button>
+					</ion-item>
+				</ion-list>
+			</form>
+		</ion-card-content>
+	</ion-card>
+	<button ion-button (click)="save()">Save</button>
 </ion-content>
+
+<ion-footer>
+	<ion-toolbar>
+		<ion-segment [(ngModel)]="mode">
+			<ion-segment-button (click)="info()" value="content">Content</ion-segment-button>
+			<ion-segment-button (click)="info()" value="info">Info</ion-segment-button>
+		</ion-segment>
+	</ion-toolbar>
+</ion-footer>

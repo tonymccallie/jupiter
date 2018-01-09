@@ -12,7 +12,7 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "config": {
-	"ionic_copy":"./copy.config.js"
+    "ionic_copy": "./copy.config.js"
   },
   "dependencies": {
     "@angular/common": "5.0.3",
@@ -31,7 +31,7 @@
     "angular2-moment": "^1.7.0",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
-    "jodit": "^3.0.38",
+    "jodit": "^3.1.4",
     "rxjs": "5.5.2",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.18"

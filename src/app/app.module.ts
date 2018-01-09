@@ -14,6 +14,7 @@ import { PageProvider } from '../providers/page/page';
 import { HttpClientModule } from '@angular/common/http';
 import { VariableProvider } from '../providers/variable/variable';
 import { TemplateProvider } from '../providers/template/template';
+import { ElementProvider } from '../providers/element/element';
 
 @NgModule({
 	declarations: [
@@ -39,7 +40,8 @@ import { TemplateProvider } from '../providers/template/template';
 		SharedModule,
 		PageProvider,
 		VariableProvider,
-		TemplateProvider
+		TemplateProvider,
+    ElementProvider
 	]
 })
 export class AppModule { }

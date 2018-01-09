@@ -11,7 +11,7 @@ import { JoditComponent } from './jodit/jodit';
 	],
 	imports: [
 		CommonModule,
-		IonicModule.forRoot(TreeViewComponent, { mode: 'ios' })
+		IonicModule
 	],
 	exports: [
 		TreeViewComponent,

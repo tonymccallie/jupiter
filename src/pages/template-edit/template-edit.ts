@@ -194,7 +194,7 @@ export class TemplateEditPage {
 	}
 
 	editElement(element) {
-		this.navCtrl.push(this.plugins[element.controller + ":" + element.action].page, { element: element, id: element.id });
+		this.navCtrl.push(this.plugins[element.controller + ":" + element.action].page, { id: element.id, type: 'template' });
 	}
 
 	grabElement(rowIndex, colIndex, childIndex) {
